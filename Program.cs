@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MVC_RBAC.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,8 @@ builder.Services.AddAuthorization(options =>
     options.FallbackPolicy = options.DefaultPolicy;
 });
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<MVC_RBACContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MVC_RBACContext") ?? throw new InvalidOperationException("Connection string 'MVC_RBACContext' not found.")));
 
 var app = builder.Build();
 
